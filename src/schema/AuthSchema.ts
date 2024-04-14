@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const AuthSchema = z.object({
-    id: z.string(),
+    googleId: z.string(),
     email: z.string().email(),
     name: z.string().min(1)
 

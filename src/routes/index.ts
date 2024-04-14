@@ -1,9 +1,9 @@
 import express from 'express';
-import authenticationRoutes from './authentication'
-
+import authRoutes from './authentication'
 const router = express.Router();
 
 export default (): express.Router => {
-    router.use('/auth/user', authenticationRoutes)
+    authRoutes(router)
     return router;
 }
+
