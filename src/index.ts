@@ -10,6 +10,9 @@ import session from 'express-session';
 import  "./config/passport";
 import passport from 'passport';
 
+
+
+  
 dotenv.config();
 
 
@@ -19,12 +22,16 @@ app.use(session({
     secret: process.env.SESSION_SECRET || '' ,
     resave: false,
     saveUninitialized: false,
-    cookie: {secure: true}
+    cookie: {secure: false}
 }))
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(cors())
+app.use(cors(
+    {
+        credentials: true,
+    }
+))
 app.use(helmet()); // set security http headers
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({extended: true}));

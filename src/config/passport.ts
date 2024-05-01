@@ -31,7 +31,9 @@ passport.use(new GoogleStrategy({
 
         const newUser = await User.create(parseUserData);
 
-       return done(null, newUser)
+        if (newUser) {
+            done(null, newUser);
+          }
 
     }
 } catch(error){
@@ -41,19 +43,14 @@ passport.use(new GoogleStrategy({
 ));
 
 
-passport.serializeUser((user: Express.User, done) =>{
-    console.log(user, 'serailize');
-
-    done(null, user)
-
-})
-
-passport.deserializeUser(async (id:string, done) =>{
-    try{
-        const user = await User.findById(id);
-        done(null, user);
-    } catch(error){
-        done(error);
-    }
-})
+passport.serializeUser((user:any, done) => {
+    console.log(user, 'serialize');
+    done(null, user.id);
+  });
+  
+  passport.deserializeUser(async (id: any, done) => {
+    const user = await User.findById(id);
+    console.log(user, 'deceralize');
+    done(null, user);
+  });
 
