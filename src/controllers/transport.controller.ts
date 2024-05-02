@@ -21,11 +21,12 @@ interface CalculateType {
 }
 
 export const calculateBusCarbonFootPrint = async ( req: Request,res: Response) => {
-  const { distance, duration }: CalculateType = req.body;
+  let { distance, duration }: CalculateType = req.body;
   try {
     if (!distance || !duration)
       return res.status(400).json({ message: "All fields are requried" });
 
+    distance = distance * 1000;
     let emmisionFactor = transport.bus;
 
     if (!emmisionFactor)
@@ -38,10 +39,13 @@ export const calculateBusCarbonFootPrint = async ( req: Request,res: Response) =
     }
 
     let carbonFootprint = distance * emmisionFactor;
-
+   
     if (!req.user) {
       return res.status(401).json({ message: "Not authenticated" });
     }
+    distance = distance/1000;
+    carbonFootprint = parseFloat(carbonFootprint.toFixed(2));
+  
 
     const transportData = {
       mode: "bus",
@@ -59,7 +63,8 @@ export const calculateBusCarbonFootPrint = async ( req: Request,res: Response) =
     const newTransportData = await Transport.create(parseTransportData);
 
     if (newTransportData) {
-      return res.json({ message: "Successfully created" });
+      return res.json({carbonemission: newTransportData,  message: "Successfully created" });
+
     }
   } catch (error) {
     console.log(error);
@@ -67,11 +72,16 @@ export const calculateBusCarbonFootPrint = async ( req: Request,res: Response) =
 };
 
 export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) => {
-    const { distance, duration }: CalculateType = req.body;
+    let { distance, duration }: CalculateType = req.body;
+
+
     try {
       if (!distance || !duration)
         return res.status(400).json({ message: "All fields are requried" });
-  
+
+      distance = distance * 1000;
+
+      
       let emmisionFactor = transport.car;
   
       if (!emmisionFactor)
@@ -79,10 +89,13 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
 
   
       let carbonFootprint = distance * emmisionFactor;
-  
+
+      
       if (!req.user) {
         return res.status(401).json({ message: "Not authenticated" });
       }
+      distance = distance/1000;
+      carbonFootprint = parseFloat(carbonFootprint.toFixed(2));
   
       const transportData = {
         mode: "car",
@@ -100,7 +113,7 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
       const newTransportData = await Transport.create(parseTransportData);
   
       if (newTransportData) {
-        return res.json({ message: "Successfully created" });
+        return res.json({carbonemission: newTransportData,  message: "Successfully created" });
       }
     } catch (error) {
       console.log(error);
@@ -108,11 +121,11 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
   };
  
   export const calculateElectricCarCarbonFootPrint = async ( req: Request,res: Response) => {
-    const { distance, duration }: CalculateType = req.body;
+    let { distance, duration }: CalculateType = req.body;
     try {
       if (!distance || !duration)
         return res.status(400).json({ message: "All fields are requried" });
-  
+      distance = distance * 1000;
       let emmisionFactor = transport.electricVehicle;
   
       if (!emmisionFactor)
@@ -124,6 +137,8 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
       if (!req.user) {
         return res.status(401).json({ message: "Not authenticated" });
       }
+      distance = distance/1000;
+      carbonFootprint = parseFloat(carbonFootprint.toFixed(2));
   
       const transportData = {
         mode: "electric car",
@@ -141,7 +156,8 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
       const newTransportData = await Transport.create(parseTransportData);
   
       if (newTransportData) {
-        return res.json({ message: "Successfully created" });
+        return res.json({carbonemission: newTransportData,  message: "Successfully created" });
+
       }
     } catch (error) {
       console.log(error);
@@ -149,11 +165,12 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
   };
 
   export const calculateTrainCarbonFootPrint = async ( req: Request,res: Response) => {
-    const { distance, duration }: CalculateType = req.body;
+    let { distance, duration }: CalculateType = req.body;
     try {
       if (!distance || !duration)
         return res.status(400).json({ message: "All fields are requried" });
-  
+      distance = distance * 1000;
+
       let emmisionFactor = transport.train;
   
       if (!emmisionFactor)
@@ -165,6 +182,9 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
       if (!req.user) {
         return res.status(401).json({ message: "Not authenticated" });
       }
+      distance = distance/1000;
+      carbonFootprint = parseFloat(carbonFootprint.toFixed(2));
+  
   
       const transportData = {
         mode: "train",
@@ -182,7 +202,8 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
       const newTransportData = await Transport.create(parseTransportData);
   
       if (newTransportData) {
-        return res.json({ message: "Successfully created" });
+        return res.json({carbonemission: newTransportData,  message: "Successfully created" });
+
       }
     } catch (error) {
       console.log(error);
@@ -190,11 +211,12 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
   };
 
   export const calculateBikeCarbonFootPrint = async ( req: Request,res: Response) => {
-    const { distance, duration }: CalculateType = req.body;
+    let { distance, duration }: CalculateType = req.body;
     try {
       if (!distance || !duration)
         return res.status(400).json({ message: "All fields are requried" });
-  
+      distance = distance * 1000;
+
       let emmisionFactor = transport.motorbike;
   
       if (!emmisionFactor)
@@ -206,6 +228,8 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
       if (!req.user) {
         return res.status(401).json({ message: "Not authenticated" });
       }
+      distance = distance/1000;
+      carbonFootprint = parseFloat(carbonFootprint.toFixed(2));
   
       const transportData = {
         mode: "bike",
@@ -223,7 +247,8 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
       const newTransportData = await Transport.create(parseTransportData);
   
       if (newTransportData) {
-        return res.json({ message: "Successfully created" });
+        return res.json({carbonemission: newTransportData,  message: "Successfully created" });
+
       }
     } catch (error) {
       console.log(error);
@@ -232,11 +257,12 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
 
   export const calculateFlightCarbonFootPrint = async (req: Request, res: Response) =>{
 
-    const { distance, duration }: CalculateType = req.body;
+    let { distance, duration }: CalculateType = req.body;
     try {
       if (!distance || !duration)
         return res.status(400).json({ message: "All fields are requried" });
-  
+      distance = distance * 1000;
+
       let emmisionFactor = transport.bus;
   
       if (!emmisionFactor)
@@ -255,6 +281,8 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
       if (!req.user) {
         return res.status(401).json({ message: "Not authenticated" });
       }
+      distance = distance/1000;
+      carbonFootprint = parseFloat(carbonFootprint.toFixed(2));
   
       const transportData = {
         mode: "flight",
@@ -272,7 +300,8 @@ export const calculateCarCarbonFootPrint = async ( req: Request,res: Response) =
       const newTransportData = await Transport.create(parseTransportData);
   
       if (newTransportData) {
-        return res.json({ message: "Successfully created" });
+        return res.json({carbonemission: newTransportData,  message: "Successfully created" });
+
       }
     } catch (error) {
       console.log(error);

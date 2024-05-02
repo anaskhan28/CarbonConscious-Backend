@@ -32,6 +32,6 @@ const transportSchema: Schema =  new Schema({
     }
 
 
-});
+},  { timestamps: true });
 
 export default mongoose.model<TransportInterface>('Transport', transportSchema);
